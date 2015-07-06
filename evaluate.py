@@ -8,7 +8,7 @@ import scipy as sp
 targets = datalib.get_column(K2.read_target_file('K2Campaign0targets.csv - K2Campaign0targets.csv'),0)
 del targets[0]
 
-result = []
+result = [['#EPIC','sigma_1','sigma_2','sigma_3','sigma_4','sigma_5']]
 errors = []
 for i in range(0,len(targets)):
 	target = targets[i]
@@ -24,4 +24,4 @@ for i in range(0,len(targets)):
 	else:
 		errors.append(target)
 datalib.write_dat(result,'evaluation.csv',',')
-datalib.write_dat(errors,'bad_data','')
+datalib.write_dat(errors,'bad_data.csv','')
