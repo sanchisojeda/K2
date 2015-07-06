@@ -46,7 +46,7 @@ def search_photometry_files(star_id,folder):
 		if str(star_id) in file:
 			star_files.append(folder + '/' + file)
 	if star_files == []:
-		star_files[0] = 'no_file'
+		star_files.append('no_file')
 	return star_files		
 
 def split_data_in_segments(data):
@@ -147,7 +147,7 @@ def subtract_poly_from_data(data_x,data_y,poly):
 	p_y = []
 	for x in data_x:
 		p_y.append(p(x))
-	return subtract(data_y,p_y)
+	return [data_x,subtract(data_y,p_y)]
 
 def get_K2_info(star_id,plot_photo = False,plot_poly = False,plot_spline = False,photometry_dir = 'Decorrelatedphotometry2', targets_file = 'K2Campaign0targets.csv - K2Campaign0targets.csv',poly_fit_deg = 0,spline_fit=False,spline_length_factor = .25,subtract_fit = True):
 	info = dict()
@@ -161,6 +161,10 @@ def get_K2_info(star_id,plot_photo = False,plot_poly = False,plot_spline = False
 		info['star_info'] = target_data
 
 		photo_data = read_K2_file(search_photometry_files(star_id,'Decorrelatedphotometry2')[0])
+
+		if(photo_data[0] == 'no_data'):
+			info['error'] = 'No photo data'
+			return info
 
 		info['photo_data_by_segments'] = split_data_in_segments(photo_data)
 
@@ -190,7 +194,7 @@ def get_K2_info(star_id,plot_photo = False,plot_poly = False,plot_spline = False
 				segment = info['photo_data_by_segments'][i]
 				x = datalib.get_column(segment,0)
 				y = datalib.get_column(segment,1)
-				poly = info[polynomial_fits][i]
+				poly = info['polynomial_fits'][i]
 				info['subtraction_by_segments'].append(subtract_poly_from_data(x,y,poly))
 		random.seed()
 		if plot_photo or plot_poly or plot_spline:
