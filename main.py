@@ -67,8 +67,6 @@ def get_data_segments(data):
 def f_plot_photo(data,col):
 	x = datalib.get_column(data,0)
 	y = datalib.get_column(data,1)
-	for i in range(0,5):
-		y = smooth2(y)
 	print len(x),len(y)	
 	plt.plot(x,y,'-',color = col)
 
@@ -83,46 +81,44 @@ def f_plot_spline(x,y,col):
 def polynomial_fit(data,xcol,ycol,degree):
 	x = datalib.get_column(data,xcol)
 	y = datalib.get_column(data,ycol)
-	for i in range(0,0):
-		y = smooth1(y)
 	return np.polyfit(x,y,degree)
 
 def spline_interpolation(data,xcol,ycol,length_factor):
 	x = datalib.get_column(data,xcol)
 	y = datalib.get_column(data,ycol)
-	for i in range(0,5):
-		y = smooth1(y)
 	new_length = length_factor*len(x)
 	new_x = np.linspace(x[0], x[len(x)-1], new_length)
 	new_y = sp.interpolate.interp1d(x, y, kind='cubic')(new_x)
 	return [new_x,new_y]
 
-def smooth1(data):
+#Points at >n*sigma become the average of all points
+def smooth1(data,n):
 	std = np.std(data)
 	mean = np.mean(data)
 
 	smoothed = []
 	for value in data:
-		if abs(value - mean) > 2*std:
+		if abs(value - mean) > n*std:
 			smoothed.append(mean)
 		else:
 			smoothed.append(value)
 	return smoothed
 
-def smooth2(data):
+#Points at >n*sigma become the average of the next and previous points
+def smooth2(data,n):
 	std = np.std(data)
 	mean = np.mean(data)
 
 	smoothed = []
 	for i in range(0,len(data)):
-		if abs(data[i] - mean) > 2*std:
-			if i>0 and i<=len(data)-2:
+		if abs(data[i] - mean) > n*std:
+			if i>0 and i<len(data)-1:
 				smoothed.append((data[i-1] + data[i+1])/2)
 			if i == 0:
 				smoothed.append(data[i+1])
 			if i == len(data)-1:
 				smoothed.append(data[i-1])
-
+			smoothed.append(data[i])	
 		else:
 			smoothed.append(data[i])
 	print len(data),len(smoothed)		
