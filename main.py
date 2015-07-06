@@ -105,24 +105,31 @@ def smooth1(data,n):
 	return smoothed
 
 #Points at >n*sigma become the average of the next and previous points
-def smooth2(data,n):
-	std = np.std(data)
-	mean = np.mean(data)
+def smooth2(data,n,iterations):
 
-	smoothed = []
-	for i in range(0,len(data)):
-		if abs(data[i] - mean) > n*std:
-			if i>0 and i<len(data)-1:
-				smoothed.append((data[i-1] + data[i+1])/2)
-			if i == 0:
-				smoothed.append(data[i+1])
-			if i == len(data)-1:
-				smoothed.append(data[i-1])
-			smoothed.append(data[i])	
-		else:
-			smoothed.append(data[i])
-	print len(data),len(smoothed)		
-	return smoothed
+	if iterations > 1:
+		smoothed = data
+		for i in range(0,iterations):
+			smoothed = smooth2(smoothed,n,0)
+		return smoothed
+	else:
+		std = np.std(data)
+		mean = np.mean(data)
+
+		smoothed = []
+		for i in range(0,len(data)):
+			if abs(data[i] - mean) > n*std:
+				if i>0 and i<len(data)-1:
+					smoothed.append((data[i-1] + data[i+1])/2)
+				if i == 0:
+					smoothed.append(data[i+1])
+				if i == len(data)-1:
+					smoothed.append(data[i-1])
+				smoothed.append(data[i])	
+			else:
+				smoothed.append(data[i])
+		print len(data),len(smoothed)		
+		return smoothed
 
 def get_K2_info(star_id,plot_photo = False,plot_poly = False,plot_spline = False,photometry_dir = 'Decorrelatedphotometry2', targets_file = 'K2Campaign0targets.csv - K2Campaign0targets.csv',poly_fit_deg = 0,spline_fit=False,spline_length_factor = .25):
 	info = dict()
