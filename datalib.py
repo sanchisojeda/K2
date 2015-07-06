@@ -16,12 +16,12 @@ def read_dat(fname):
 
 Column separator: tab
 """	
-def write_dat(data,fname):
+def write_dat(data,fname,separator):
 	output = open(fname,"w")
 	for r in range(0,len(data)):
 		row = ""
 		for c in data[r]:
-			row = row + str(c) + "\t"
+			row = row + str(c) + separator
 		print >>output,row
 
 """Deletes a row of a 2d matrix
