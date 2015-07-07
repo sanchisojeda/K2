@@ -4,12 +4,12 @@ __version__ = "1.0.1"
 
 Column separator: tab
 """
-def read_dat(fname):
+def read_dat(fname,separator):
 	data = []
 	with open(fname,"r") as txt:
 		for line in txt:
 			line = line.replace("\n","")
-			data.append(line.split("\t"))
+			data.append(line.split(separator))
 	return data
 
 """Writes a 2d matrix into a .dat file 
