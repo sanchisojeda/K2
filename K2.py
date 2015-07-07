@@ -172,7 +172,7 @@ def get_K2_info(star_id,plot_photo = False,plot_poly = False,photometry_dir = 'D
 		if plot_photo or plot_poly:
 			for i in range(0,len(info['photo_data_by_segments'])):
 				if plot_photo:					
-					f_plot_photo(info['photo_data_by_segments'][i],[random.random(),random.random(),random.random()],False)
+					f_plot_photo(info['photo_data_by_segments'][i],[random.random(),random.random(),random.random()])
 				if plot_poly:
 					f_plot_poly(info['polynomial_fits'][i],datalib.get_column(info['photo_data_by_segments'][i],0),[random.random(),random.random(),random.random()])
 			plt.show()
