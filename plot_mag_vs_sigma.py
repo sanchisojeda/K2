@@ -1,20 +1,29 @@
-import datalib
+
 import matplotlib.pyplot as plt
+import numpy as np
+import datalib as dl
 
-data = datalib.read_dat('evaluation.csv',',')
-del data[0]
-mags = datalib.get_column_numerized(data,1)
-sigma_avg = []
-for row in data:
-	S = 0
-	i = 2
-	n = 0
-	while row[i] != '':
-		S += float(row[i])
-		n += 1
-		i += 1
+data = dl.read_dat('evaluation.csv',',')
 
-	sigma_avg.append(S/n)
+f, plots = plt.subplots(5, sharey=True)
 
-plt.plot(sigma_avg,mags,'.')
+dwarf_flags = dl.get_column(data,1)
+kepmags = dl.get_column(data,3)
+sigmas = []
+for sigma in range(4,9):
+	sigmas.append(dl.get_column(data,sigma))
+
+for i in range(1,len(dl.get_column(data,0))):
+	for seg in range(4,9):
+		is_dwarf = dwarf_flags[i]
+		if is_dwarf == '1.0':
+			symbol = 'd'
+		elif is_dwarf == '0.0':
+			symbol = 'o'
+		else:
+			symbol = 'x'
+
+		if sigma != 'nan' and kepmags[i] != 'nan':
+			plots[seg-4].scatter(float(kepmags[i]),np.log10(float(sigmas[seg-4][i])),marker=symbol)
+
 plt.show()

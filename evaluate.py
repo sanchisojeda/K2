@@ -16,7 +16,7 @@ def get_data(star_id,data):
 targets = datalib.get_column(K2.read_target_file('K2Campaign0targets.csv - K2Campaign0targets.csv'),0)
 del targets[0]
 
-result = [['#EPIC','is_dwarf','teff','kepmag','sigma_1','sigma_2','sigma_3','sigma_4','sigma_5']]
+result = [['EPIC','is_dwarf','teff','kepmag','sigma_1','sigma_2','sigma_3','sigma_4','sigma_5']]
 errors = []
 quality = [['#EPIC','seg_1_ratio','seg_1_flag','seg_2_ratio','seg_2_flag','seg_3_ratio','seg_3_flag','seg_4_ratio','seg_4_flag','seg_5_ratio','seg_5_flag']]
 
@@ -47,6 +47,7 @@ for i in range(0,len(targets)):
 			num_i = (t1-t0)/KEPLER_CADENCE
 			if len(seg[0]) < .5*num_i:
 				star_qual.append('BAD')
+				star.append('nan')
 			else:
 				star_qual.append('GOOD')
 				sigma = np.std(seg[1])

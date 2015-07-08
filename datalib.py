@@ -56,7 +56,10 @@ First arg: 2d matrix Second arg: column number
 def get_column(data,c):
 	column = []
 	for row in data:
-		column.append(row[c])
+		if c < len(row)-1:	
+			column.append(row[c])
+		else:
+			column.append('nan')
 	return column
 
 """Returns a column as 1d array converting its values to floats
