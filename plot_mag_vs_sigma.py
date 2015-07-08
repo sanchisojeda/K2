@@ -7,11 +7,12 @@ def color_T(Teff):
 	if Teff == 'nan' or Teff == '-1.0' or Teff == '1.0':
 		return [0,0,0]
 	Teff = float(Teff)
-	return [1-(Teff-2265)/5375.0,0.0,(Teff-2265)/5375.0]
+	x = (Teff-2265)/5375.0
+	return [-x*x+1,-4*x*(x-1),-x*(x-2)]
 
 data = dl.read_dat('evaluation.csv',',')
 
-f, plots = plt.subplots(5, sharex=True,sharey=True)
+f,plots = plt.subplots(3,2, sharex=True,sharey=True)
 
 dwarf_flags = dl.get_column(data,1)
 kepmags = dl.get_column(data,3)
@@ -32,6 +33,8 @@ for i in range(1,length):
 			symbol = 'x'
 
 		if sigma != 'nan' and kepmags[i] != 'nan': 
-			plots[seg-4].scatter(float(kepmags[i]),np.log10(float(sigmas[seg-4][i])),marker=symbol,color = color_T(Teffs[i]))
+			plots[np.ceil((seg-4)/2)][(seg-4)%2].scatter(float(kepmags[i]),np.log10(float(sigmas[seg-4][i])),marker=symbol,color = color_T(Teffs[i]))
+			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_ylabel('$\log{\sigma_' + str(seg-3) +'}$')
+			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_xlabel('$Kepler \, band \, magnitude$')
 		print int((i*100)/length) 
 plt.show()
