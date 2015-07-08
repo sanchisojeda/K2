@@ -36,5 +36,7 @@ for i in range(1,length):
 			plots[np.ceil((seg-4)/2)][(seg-4)%2].scatter(float(kepmags[i]),np.log10(float(sigmas[seg-4][i])),marker=symbol,color = color_T(Teffs[i]))
 			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_ylabel('$\log{\sigma_' + str(seg-3) +'}$')
 			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_xlabel('$Kepler \, band \, magnitude$')
+			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_title('$Segment \, '+ str(seg-3) + '$')
+
 		print int((i*100)/length) 
 plt.show()
