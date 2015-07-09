@@ -44,7 +44,7 @@ for i in range(1,length):
 
 		if sigma != 'nan' and kepmags[i] != 'nan':
 			plots[np.ceil((seg-4)/2)][(seg-4)%2].scatter(float(kepmags[i]),np.log10(float(sigmas[seg-4][i])),marker=symbol,color = color_T(Teffs[i]))
-			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_ylabel('$\log{\sigma_' + str(seg-3) +'}$',fontsize=20)
+			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_ylabel('$\log{\sigma_' + str(seg-3) +'}$',fontsize=40)
 			plots[np.ceil((seg-4)/2)][(seg-4)%2].tick_params(axis='both', which='major', labelsize=20)
 			plots[np.ceil((seg-4)/2)][(seg-4)%2].grid(True)
 			plots[np.ceil((seg-4)/2)][(seg-4)%2].set_xlim([8.25,17])
